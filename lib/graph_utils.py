@@ -1,13 +1,5 @@
-from sklearn.preprocessing import normalize
 import numpy as np
-from scipy.special import iv
 import scipy.sparse as sp
-from scipy.sparse.linalg.eigen.arpack import eigsh
-from scipy.optimize import minimize
-from scipy.integrate import quad
-import sys
-import math
-import time
 
 def laplacian(W):
     """Return the Laplacian of the weight matrix."""
