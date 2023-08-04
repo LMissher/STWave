@@ -3,7 +3,7 @@ This is a PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavele
 
 [08/2022] STWave is accepted by ICDE 2023!
 
-[The architecture of the proposed STWave. FC: fully-connected layer, DWT: discrete wavelet transform.](https://github.com/LMissher/STWave/blob/main/stwave.png)
+![The architecture of the proposed STWave. FC: fully-connected layer, DWT: discrete wavelet transform.](https://github.com/LMissher/STWave/blob/main/stwave.png)
 
 ## Requirements
 The model is implemented using Python3 with dependencies specified in requirements.txt.
