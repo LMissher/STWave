@@ -1,10 +1,12 @@
 # STWave
-This is a PyTorch implementation of the paper: When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks.
+This is a PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks](https://ieeexplore.ieee.org/document/10184591).
 
 [08/2022] STWave is accepted by ICDE 2023!
 
 ## Requirements
-The model is implemented using Python3 with dependencies specified in requirements.txt
+The model is implemented using Python3 with dependencies specified in requirements.txt.
+
+The Pytorch_Wavelets package should be manually installed according to this [github page](https://github.com/fbcotter/pytorch_wavelets)
 
 ## Data Preparation
 
