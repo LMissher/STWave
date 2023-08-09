@@ -1,4 +1,4 @@
-# STWave
+# STWave [ICDE'2023]
 This is a PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks](https://ieeexplore.ieee.org/document/10184591).
 
 [08/2022] STWave is accepted by ICDE 2023!
