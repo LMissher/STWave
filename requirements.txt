@@ -12,3 +12,4 @@ scikit-learn=0.23.2=py37h0573a6f_0
 scipy=1.5.2=py37h0b6359f_0
 torchaudio=0.7.2=py37
 torchvision=0.8.2=py37_cu102
+PyWavelets=1.4.1
