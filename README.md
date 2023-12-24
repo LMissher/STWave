@@ -1,55 +1,58 @@
-# STWave [ICDE'2023]
-This is a PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks](https://ieeexplore.ieee.org/document/10184591).
+# [ICDE'2023] STWave
 
-[08/2022] STWave is accepted by ICDE 2023!
+## 📖Introduction
+This is a official PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks](https://ieeexplore.ieee.org/document/10184591).
 
-![The architecture of the proposed STWave. FC: fully-connected layer, DWT: discrete wavelet transform.](https://github.com/LMissher/STWave/blob/main/stwave.png)
+<img src="./stwave.png" align="middle" width="95%">
 
-## Requirements
-The model is implemented using Python3 with dependencies specified in requirements.txt.
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/when-spatio-temporal-meet-wavelets/traffic-prediction-on-pemsd3)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd3?p=when-spatio-temporal-meet-wavelets)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/when-spatio-temporal-meet-wavelets/traffic-prediction-on-pemsd4)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd4?p=when-spatio-temporal-meet-wavelets)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/when-spatio-temporal-meet-wavelets/traffic-prediction-on-pems07)](https://paperswithcode.com/sota/traffic-prediction-on-pems07?p=when-spatio-temporal-meet-wavelets)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/when-spatio-temporal-meet-wavelets/traffic-prediction-on-pemsd8)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd8?p=when-spatio-temporal-meet-wavelets)
 
-The Pytorch_Wavelets package should be manually installed according to this [github page](https://github.com/fbcotter/pytorch_wavelets)
 
-## Data Preparation
+## ⚡Environment
+- PyTorch
+- fastdtw
+- PyWavelets
+
+## 🔧 Data Preparation
 
 ### PeMSD3 & PeMSD4 & PeMSD7 & PeMSD8
-download the data [PeMSD*](https://pan.baidu.com/share/init?surl=ZPIiOM__r1TRlmY4YGlolw) with code: p72z. 
+Download the data [PeMSD*](https://pan.baidu.com/share/init?surl=ZPIiOM__r1TRlmY4YGlolw) with code: p72z and unzip them into the correspoding folder.
 
 ### PeMSD7(M) & PeMSD7(L)
-download the data [PeMSD7(M)](https://github.com/VeritasYin/STGCN_IJCAI-18/tree/master/data_loader).
-email authors of STGCN to get the data PeMSD7(L).
+Download the data [PeMSD7(M)](https://github.com/VeritasYin/STGCN_IJCAI-18/tree/master/data_loader).
+Email authors of STGCN to get the data PeMSD7(L).
 
-### Before Training
-make folders of cpt and log.
 
-## Model Training
-
-# PeMSD3
-```
-python train.py --config ./config/PeMSD3.conf
-```
-
-# PeMSD4
-```
-python train.py --config ./config/PeMSD4.conf
+## 🚀 Run
+Given the example of PeMSD8
+```bash
+mkdir ./cpt/PeMSD8
+mkdir ./log/PeMSD8
+python main.py --conifg config/PeMSD8.conf
 ```
 
-# PeMSD7
-```
-python train.py --config ./config/PeMSD7.conf
+
+## 💬Citation
+
+
+If you find our work is helpful, please cite as:
+
+```text
+@inproceedings{fang2023spatio,
+  title={When spatio-temporal meet wavelets: Disentangled traffic forecasting via efficient spectral graph attention networks},
+  author={Fang, Yuchen and Qin, Yanjun and Luo, Haiyong and Zhao, Fang and Xu, Bingbing and Zeng, Liang and Wang, Chenxing},
+  booktitle={2023 IEEE 39th International Conference on Data Engineering (ICDE)},
+  pages={517--529},
+  year={2023},
+  organization={IEEE}
+}
 ```
 
-# PeMSD8
-```
-python train.py --config ./config/PeMSD8.conf
-```
+## 👍Contributing
 
-# PeMSD7(M)
-```
-python train.py --config ./config/PeMSD7(M).conf
-```
 
-# PeMSD7(L)
-```
-python train.py --config ./config/PeMSD7(L).conf
-```
+We welcome contributions and suggestions!
+

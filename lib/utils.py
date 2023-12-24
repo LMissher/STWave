@@ -1,11 +1,6 @@
-import logging
-import numpy as np
-import os
-import pickle
-import sys
+import pywt
 import torch
-import math
-from pytorch_wavelets import DWT1DForward, DWT1DInverse
+import numpy as np
 
 # log string
 def log_string(log, string):
@@ -33,7 +28,7 @@ def metric(pred, label):
     return mae, rmse, mape
 
 def _compute_loss(y_true, y_predicted):
-    return masked_mae(y_predicted, y_true, 0.0)
+        return masked_mae(y_predicted, y_true, 0.0)
 
 def masked_mae(preds, labels, null_val=np.nan):
     if np.isnan(null_val):
@@ -49,80 +44,57 @@ def masked_mae(preds, labels, null_val=np.nan):
     return torch.mean(loss)
 
 def seq2instance(data, P, Q):
-    num_step, dims = data.shape
+    num_step, nodes, dims = data.shape
     num_sample = num_step - P - Q + 1
-    x = np.zeros(shape = (num_sample, P, dims))
-    y = np.zeros(shape = (num_sample, Q, dims))
+    x = np.zeros(shape = (num_sample, P, nodes, dims))
+    y = np.zeros(shape = (num_sample, Q, nodes, dims))
     for i in range(num_sample):
         x[i] = data[i : i + P]
         y[i] = data[i + P : i + P + Q]
     return x, y
 
-def disentangle(data, w, j):
-    # Disentangle
-    dwt = DWT1DForward(wave=w, J=j)
-    idwt = DWT1DInverse(wave=w)
-    torch_traffic = torch.from_numpy(data).transpose(1,-1).reshape(data.shape[0]*data.shape[2], -1).unsqueeze(1)
-    torch_trafficl, torch_traffich = dwt(torch_traffic.float())
-    placeholderh = torch.zeros(torch_trafficl.shape)
-    placeholderl = []
-    for i in range(j):
-        placeholderl.append(torch.zeros(torch_traffich[i].shape))
-    torch_trafficl = idwt((torch_trafficl, placeholderl)).reshape(data.shape[0],data.shape[2],1,-1).squeeze(2).transpose(1,2)
-    torch_traffich = idwt((placeholderh, torch_traffich)).reshape(data.shape[0],data.shape[2],1,-1).squeeze(2).transpose(1,2)
-    trafficl = torch_trafficl.numpy()
-    traffich = torch_traffich.numpy()
-    return trafficl, traffich
+def disentangle(x, w, j):
+    x = x.transpose(0,3,2,1) # [S,D,N,T]
+    coef = pywt.wavedec(x, w, level=j)
+    coefl = [coef[0]]
+    for i in range(len(coef)-1):
+        coefl.append(None)
+    coefh = [None]
+    for i in range(len(coef)-1):
+        coefh.append(coef[i+1])
+    xl = pywt.waverec(coefl, w).transpose(0,3,2,1)
+    xh = pywt.waverec(coefh, w).transpose(0,3,2,1)
 
-def loadData(args):
+    return xl, xh
+
+def loadData(filepath, P, Q, train_ratio, test_ratio, log):
     # Traffic
-    Traffic = np.squeeze(np.load(args.traffic_file)['data'], -1)
-    print(Traffic.shape)
-    # train/val/test 
+    Traffic = np.load(filepath)['data']
     num_step = Traffic.shape[0]
-    train_steps = round(args.train_ratio * num_step)
-    test_steps = round(args.test_ratio * num_step)
+    TE = np.zeros([num_step, 2])
+    TE[:,1] = np.array([i % 288 for i in range(num_step)])
+    TE[:,0] = np.array([(i // 288) % 7 for i in range(num_step)])
+    TE_tile = np.repeat(np.expand_dims(TE, 1), Traffic.shape[1], 1)
+    log_string(log, f'Shape of data: {Traffic.shape}')
+    # train/val/test 
+    train_steps = round(train_ratio * num_step)
+    test_steps = round(test_ratio * num_step)
     val_steps = num_step - train_steps - test_steps
-    train = Traffic[: train_steps]
-    val = Traffic[train_steps : train_steps + val_steps]
-    test = Traffic[-test_steps :]
+    trainData, trainTE = Traffic[: train_steps], TE_tile[: train_steps]
+    valData, valTE = Traffic[train_steps : train_steps + val_steps], TE_tile[train_steps : train_steps + val_steps]
+    testData, testTE = Traffic[-test_steps :], TE_tile[-test_steps :]
     # X, Y
-    trainX, trainY = seq2instance(train, args.T1, args.T2)
-    valX, valY = seq2instance(val, args.T1, args.T2)
-    testX, testY = seq2instance(test, args.T1, args.T2)
-    # disentangling
-    trainXL, trainXH = disentangle(trainX, args.w, args.j)
-    trainYL, trainYH = disentangle(trainY, args.w, args.j)
-    valXL, valXH = disentangle(valX, args.w, args.j)
-    testXL, testXH = disentangle(testX, args.w, args.j)
+    trainX, trainY = seq2instance(trainData, P, Q)
+    valX, valY = seq2instance(valData, P, Q)
+    testX, testY = seq2instance(testData, P, Q)
+    trainXTE, trainYTE = seq2instance(trainTE, P, Q)
+    valXTE, valYTE = seq2instance(valTE, P, Q)
+    testXTE, testYTE = seq2instance(testTE, P, Q)
+    # derive temporal embedding
+    trainTE = np.concatenate([trainXTE, trainYTE], axis=1)
+    valTE = np.concatenate([valXTE, valYTE], axis=1)
+    testTE = np.concatenate([testXTE, testYTE], axis=1)
     # normalization
     mean, std = np.mean(trainX), np.std(trainX)
-    trainXL, trainXH = (trainXL - mean) / std, (trainXH - mean) / std
-    valXL, valXH = (valXL - mean) / std, (valXH - mean) / std
-    testXL, testXH = (testXL - mean) / std, (testXH - mean) / std
-    trainX, valX, testX = (trainX - mean) / std, (valX - mean) / std, (testX - mean) / std
-    # temporal embedding
-    tmp = {'PeMSD3':6,'PeMSD4':1,'PeMSD7':1,'PeMSD8':5, 'PeMSD7L':2, 'PeMSD7M':2}
-    days = {'PeMSD3':7,'PeMSD4':7,'PeMSD7':7,'PeMSD8':7, 'PeMSD7L':5, 'PeMSD7M':5}
-    TE = np.zeros([num_step, 2])
-    startd = (tmp[args.Dataset] - 1) * 288
-    df = days[args.Dataset]
-    startt = 0
-    for i in range(num_step):
-        TE[i,0] = startd //  288
-        startd = (startd + 1) % (df * 288)
-        TE[i,1] = startt
-        startt = (startt + 1) % 288
-    # train/val/test
-    train = TE[: train_steps]
-    val = TE[train_steps : train_steps + val_steps]
-    test = TE[-test_steps :]
-    # shape = (num_sample, P + Q, 2)
-    trainTE = seq2instance(train, args.T1, args.T2)
-    trainTE = np.concatenate(trainTE, axis = 1).astype(np.int32)
-    valTE = seq2instance(val, args.T1, args.T2)
-    valTE = np.concatenate(valTE, axis = 1).astype(np.int32)
-    testTE = seq2instance(test, args.T1, args.T2)
-    testTE = np.concatenate(testTE, axis = 1).astype(np.int32)
     
-    return trainXL, trainXH, trainTE, trainY, trainYL, valXL, valXH, valTE, valY, testXL, testXH, testTE, testY, mean, std
+    return trainX, trainY, trainTE, valX, valY, valTE, testX, testY, testTE, mean, std, trainData[...,0]
