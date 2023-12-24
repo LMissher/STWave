@@ -19,11 +19,17 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 ## 🔧 Data Preparation
 
 ### PeMSD3 & PeMSD4 & PeMSD7 & PeMSD8
-Download the data [PeMSD*](https://pan.baidu.com/share/init?surl=ZPIiOM__r1TRlmY4YGlolw) with code: p72z and unzip them into the correspoding folder.
+- Download the data [PeMSD*](https://pan.baidu.com/share/init?surl=ZPIiOM__r1TRlmY4YGlolw) with code: p72z.
+- Unzip them to corresponding folders.
 
 ### PeMSD7(M) & PeMSD7(L)
-Download the data [PeMSD7(M)](https://github.com/VeritasYin/STGCN_IJCAI-18/tree/master/data_loader).
-Email authors of STGCN to get the data PeMSD7(L).
+- Download the data [PeMSD7(M)](https://github.com/VeritasYin/STGCN_IJCAI-18/tree/master/data_loader).
+
+- Email authors of STGCN to get the data PeMSD7(L).
+
+### Data Shape
+- flow.npz: [T, N, 1]
+- adj.npy: [N, N]
 
 
 ## 🚀 Run
