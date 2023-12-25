@@ -37,7 +37,7 @@ Given the example of PeMSD8
 ```bash
 mkdir ./cpt/PeMSD8
 mkdir ./log/PeMSD8
-python main.py --conifg config/PeMSD8.conf
+python main.py --config config/PeMSD8.conf
 ```
 
 
