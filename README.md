@@ -28,7 +28,7 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 - Email authors of STGCN to get the data PeMSD7(L).
 
 ### Data Shape
-- flow.npz: [T, N, 1]
+- flow.npz: [T, N, F] (**F** should be consistent with the **input_dims** in the config file)
 - adj.npy: [N, N]
 
 

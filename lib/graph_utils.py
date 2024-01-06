@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from tqdm import tqdm
 import scipy.sparse as sp
 from fastdtw import fastdtw
 from .utils import log_string
@@ -30,7 +31,7 @@ def construct_tem_adj(data, num_node):
     data_mean = np.mean([data[24*12*i: 24*12*(i+1)] for i in range(data.shape[0]//(24*12))], axis=0)
     data_mean = data_mean.squeeze().T 
     dtw_distance = np.zeros((num_node, num_node))
-    for i in range(num_node):
+    for i in tqdm(range(num_node)):
         for j in range(i, num_node):
             dtw_distance[i][j] = fastdtw(data_mean[i], data_mean[j], radius=6)[0]
     for i in range(num_node):
