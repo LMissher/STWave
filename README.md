@@ -34,17 +34,17 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 
 ```tex
 └── code-and-data
-    ├── config                    # Including detail configurations
+    ├── config                 # Including detail configurations
     ├── cpt                    # Storing pre-trained weight files (should be created)
-    ├── data                    # Including adj files and the main data should be downloaded
+    ├── data                   # Including adj files and the main data should be downloaded
     ├── lib
     │   |──  utils.py          # Codes of preprocessing datasets and calculating metrics
-    │   |──  graph_utils.py          # Codes of calculating eigens and deriving the temporal graph
+    │   |──  graph_utils.py    # Codes of calculating eigens and deriving the temporal graph
     ├── log                    # Storing log files (should be created)
     ├── model
-    │   |──  models.py          # The core source code of our STWave
-    ├── mian.py                 # This is the main file for training and testing
-    └── README.md               # This document
+    │   |──  models.py         # The core source code of our STWave
+    ├── mian.py                # This is the main file for training and testing
+    └── README.md              # This document
 ```
 
 
