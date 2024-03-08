@@ -35,8 +35,8 @@ class Solver(object):
         self.build_model()
     
     def build_model(self):
-        self.model = STWave(self.input_dims, self.heads, self.dims, self.layers,
-                            self.samples, self.localadj, self.spawave, self.temwave,
+        self.model = STWave(self.heads, self.dims, self.layers, self.samples,
+                            self.localadj, self.spawave, self.temwave,
                             self.input_len, self.output_len).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(),
                                         lr=self.learning_rate)
@@ -209,7 +209,6 @@ if __name__ == '__main__':
     parser.add_argument('--val_ratio', type = float, default = config['data']['val_ratio'])
     parser.add_argument('--test_ratio', type = float, default = config['data']['test_ratio'])
 
-    parser.add_argument('--input_dims', type = int, default = config['param']['input_dims'])
     parser.add_argument('--dims', type = int, default = config['param']['dims'])
     parser.add_argument('--heads', type = int, default = config['param']['heads'])
     parser.add_argument('--layers', type = int, default = config['param']['layers'])

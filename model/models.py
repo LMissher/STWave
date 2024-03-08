@@ -300,7 +300,7 @@ class Adaptive_Fusion(nn.Module):
         return self.ff(value)
     
 class STWave(nn.Module):
-    def __init__(self, input_dims, heads,
+    def __init__(self, heads,
                 dims, layers, samples,
                 localadj, spawave, temwave,
                 input_len, output_len):
@@ -318,8 +318,8 @@ class STWave(nn.Module):
         self.pre_h = nn.Conv2d(input_len, output_len, (1,1))
         self.pre = nn.Conv2d(input_len, output_len, (1,1))
 
-        self.start_emb_l = FeedForward([input_dims, features, features])
-        self.start_emb_h = FeedForward([input_dims, features, features])
+        self.start_emb_l = FeedForward([1, features, features])
+        self.start_emb_h = FeedForward([1, features, features])
         self.end_emb = FeedForward([features, features, 1])
         self.end_emb_l = FeedForward([features, features, 1])
         self.te_emb = TemEmbedding(features)
