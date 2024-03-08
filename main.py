@@ -26,7 +26,7 @@ class Solver(object):
         self.mean, self.std, data = loadData(
                                         self.traffic_file, self.input_len, self.output_len,
                                         self.train_ratio, self.test_ratio, log)
-        self.localadj, self.spawave, self.temwave = loadGraph(self.adj_file, self.heads*self.dims, data, log)
+        self.localadj, self.spawave, self.temwave = loadGraph(self.adj_file, self.tem_adj_file, self.heads*self.dims, data, log)
         log_string(log, '------------ End -------------\n')
 
         self.best_epoch = 0
@@ -219,6 +219,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--traffic_file', default = config['file']['traffic'])
     parser.add_argument('--adj_file', default = config['file']['adj'])
+    parser.add_argument('--tem_adj_file', default = config['file']['temadj'])
     parser.add_argument('--model_file', default = config['file']['model'])
     parser.add_argument('--log_file', default = config['file']['log'])
 

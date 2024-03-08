@@ -69,7 +69,7 @@ def disentangle(x, w, j):
 
 def loadData(filepath, P, Q, train_ratio, test_ratio, log):
     # Traffic
-    Traffic = np.load(filepath)['data']
+    Traffic = np.load(filepath)['data'][...,:1]
     num_step = Traffic.shape[0]
     TE = np.zeros([num_step, 2])
     TE[:,1] = np.array([i % 288 for i in range(num_step)])

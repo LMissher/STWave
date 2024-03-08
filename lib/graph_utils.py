@@ -1,3 +1,4 @@
+import os
 import math
 import numpy as np
 from tqdm import tqdm
@@ -29,7 +30,7 @@ def get_eigv(adj,k):
 
 def construct_tem_adj(data, num_node):
     data_mean = np.mean([data[24*12*i: 24*12*(i+1)] for i in range(data.shape[0]//(24*12))], axis=0)
-    data_mean = data_mean.squeeze().T 
+    data_mean = data_mean.squeeze().T
     dtw_distance = np.zeros((num_node, num_node))
     for i in tqdm(range(num_node)):
         for j in range(i, num_node):
@@ -46,11 +47,15 @@ def construct_tem_adj(data, num_node):
     tem_matrix = np.logical_or(tem_matrix, tem_matrix.T)
     return tem_matrix
 
-def loadGraph(spatial_graph, dims, data, log):
+def loadGraph(spatial_graph, temporal_graph, dims, data, log):
     # calculate spatial and temporal graph wavelets
     adj = np.load(spatial_graph)
     adj = adj + np.eye(adj.shape[0])
-    tem_adj = construct_tem_adj(data, adj.shape[0])
+    if os.path.exists(temporal_graph):
+        tem_adj = np.load(temporal_graph)
+    else:
+        tem_adj = construct_tem_adj(data, adj.shape[0])
+        np.save(temporal_graph, tem_adj)
     spawave = get_eigv(adj, dims)
     temwave = get_eigv(tem_adj, dims)
     log_string(log, f'Shape of graphwave eigenvalue and eigenvector: {spawave[0].shape}, {spawave[1].shape}')
