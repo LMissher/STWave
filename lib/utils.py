@@ -96,5 +96,11 @@ def loadData(filepath, P, Q, train_ratio, test_ratio, log):
     testTE = np.concatenate([testXTE, testYTE], axis=1)
     # normalization
     mean, std = np.mean(trainX), np.std(trainX)
+
+    log_string(log, f'Shape of Train Data: {trainX.shape}')
+    log_string(log, f'Shape of Validation Data: {valX.shape}')
+    log_string(log, f'Shape of Test Data: {testX.shape}')
+
+    log_string(log, f'Mean: {mean} & Std: {std}')
     
     return trainX, trainY, trainTE, valX, valY, valTE, testX, testY, testTE, mean, std, trainData[...,0]

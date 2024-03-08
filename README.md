@@ -27,9 +27,25 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 
 - Email authors of STGCN to get the data PeMSD7(L).
 
-### Data Shape
-- flow.npz: [T, N, F] (**F** should be consistent with the **input_dims** in the config file)
-- adj.npy: [N, N]
+### Tips
+- **The name of downloaded datasets should be consistent with the name in config files.**
+
+## Folder Structure
+
+```tex
+└── code-and-data
+    ├── config                    # Including detail configurations
+    ├── cpt                    # Storing pre-trained weight files (should be created)
+    ├── data                    # Including adj files and the main data should be downloaded
+    ├── lib
+    │   |──  utils.py          # Codes of preprocessing datasets and calculating metrics
+    │   |──  graph_utils.py          # Codes of calculating eigens and deriving the temporal graph
+    ├── log                    # Storing log files (should be created)
+    ├── model
+    │   |──  models.py          # The core source code of our STWave
+    ├── mian.py                 # This is the main file for training and testing
+    └── README.md               # This document
+```
 
 
 ## 🚀 Run
