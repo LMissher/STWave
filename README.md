@@ -1,6 +1,6 @@
 # [ICDE'2023] STWave
 
-## 📖Introduction
+## 📖 Introduction
 This is a official PyTorch implementation of the paper: [When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks](https://ieeexplore.ieee.org/document/10184591).
 
 <img src="./stwave.png" align="middle" width="95%">
@@ -11,7 +11,7 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/when-spatio-temporal-meet-wavelets/traffic-prediction-on-pemsd8)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd8?p=when-spatio-temporal-meet-wavelets)
 
 
-## ⚡Environment
+## ⚡ Environment
 - PyTorch
 - fastdtw
 - PyWavelets
@@ -30,7 +30,7 @@ This is a official PyTorch implementation of the paper: [When Spatio-Temporal Me
 ### Tips
 - **The name of downloaded datasets should be consistent with the name in config files.**
 
-## Folder Structure
+## 📂 Folder Structure
 
 ```tex
 └── code-and-data
@@ -57,7 +57,7 @@ python main.py --config config/PeMSD8.conf
 ```
 
 
-## 💬Citation
+## 💬 Citation
 
 
 If you find our work is helpful, please cite as:
@@ -73,7 +73,7 @@ If you find our work is helpful, please cite as:
 }
 ```
 
-## 👍Contributing
+## 👍 Contributing
 
 
 We welcome contributions and suggestions!
