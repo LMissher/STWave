@@ -44,7 +44,7 @@ def construct_tem_adj(data, num_node):
         int(np.log2(dtw_distance.shape[0])*dtw_distance.shape[0])+1] # NlogN edges
     tem_matrix = np.zeros_like(dtw_distance)
     tem_matrix[dtw_distance <= nth] = 1
-    tem_matrix = np.logical_or(tem_matrix, tem_matrix.T)
+    tem_matrix = np.logical_or(tem_matrix, tem_matrix.T).astype(int)
     return tem_matrix
 
 def loadGraph(spatial_graph, temporal_graph, dims, data, log):
